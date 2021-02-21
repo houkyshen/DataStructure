@@ -1,0 +1,17 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../:\JAVALearning\DataStructure\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+##----------idea----------
+*.iml
+.idea/
+*.ipr
+*.iws
+/target/
+
+
+
