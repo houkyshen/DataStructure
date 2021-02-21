@@ -35,13 +35,13 @@ public class SingleLinkedList {
     }
 
     public static void main(String[] args) {
-        SingleLinkedList singleLinkedList = new SingleLinkedList();
-        singleLinkedList.initList1();//初始化带头结点
+        SingleLinkedList singleLinkedList = new SingleLinkedList();//创建链表，为链表申请存储空间
+        singleLinkedList.initList1();//初始化链表，带头结点
         for (int i = 0; i < 15; i++) {
             singleLinkedList.insert("第" + (i + 1) + "个节点", i + 1);
         }
         singleLinkedList.insert2("第2个节点，不一样了哦", 2);//链表至少要有i-1个节点，否则插入失败
-        //singleLinkedList.delete(3);
+        singleLinkedList.delete(3);
         System.out.println(singleLinkedList.getListNode(1).data);
         System.out.println(singleLinkedList.getListNode(1));
     }
@@ -64,24 +64,13 @@ public class SingleLinkedList {
         if (i < 1) {
             return false;
         }
-        ListNode p = headNode;//把p定义为头结点
-        int j = 0;//当前p指向第几个节点
-        //循环遍历到第i-1个节点
-        while (p != null && j < i - 1) {
-            p = p.next;//找到第i-1个节点
-            j++;
-        }
+        //获取第i-1个节点，定义为p节点
+        ListNode p = this.getListNode(i - 1);
         if (p == null) {//如果i值不合法
             return false;
         }
-        //创建第i个节点的存储空间
-        ListNode s = new ListNode();
-        //给第i个节点赋值
-        s.data = value;
-        //把第i-1个节点的指针赋给第i个节点
-        s.next = p.next;
-        //把第i-1个节点的指针改变为指向第i个节点
-        p.next = s;
+        //在p节点后面插入新节点
+        insertNextNode(p, value);
         return true;
     }
 
@@ -90,13 +79,32 @@ public class SingleLinkedList {
         if (i < 1) {
             return false;
         }
-        ListNode p = headNode;//把p定义为头结点
-        int j = 0;//当前p指向第几个节点
-        //循环遍历到第i个节点
-        while (p != null && j < i) {
-            p = p.next;//找到第i个节点
-            j++;
+        //获取第i个节点，命名为p节点
+        ListNode p = this.getListNode(i);
+        if (p == null) {//如果i值不合法
+            return false;
         }
+        //在p节点前面插入节点
+        insertPreviousNode(p, value);
+        return true;
+    }
+
+    //后插法，在节点p后面插入节点
+    private boolean insertNextNode(ListNode p, Object value) {
+        if (p == null) return false;
+        //创建插入节点
+        ListNode s = new ListNode();
+        //给插入节点赋值
+        s.data = value;
+        //把p节点的指针赋给s节点
+        s.next = p.next;
+        //把p节点的指针改变为指向s节点
+        p.next = s;
+        return true;
+    }
+
+    //前插法，在节点p前面插入节点
+    private boolean insertPreviousNode(ListNode p, Object value) {
         if (p == null) {//如果i值不合法
             return false;
         }
@@ -118,30 +126,31 @@ public class SingleLinkedList {
 
     //删除节点
     private boolean delete(int i) {
-        if (i < 1) {
+        if (i < 1) {//头结点不可删除，故i不能小于1
             return false;
         }
-        ListNode p = headNode;
-        int j = 0;//当前p指向第几个节点
-        while (p != null && j < i - 1) {
-            //找到第i-1个节点
-            p = p.next;
-            j++;
+        //获取第i-1个节点
+        ListNode p = this.getListNode(i - 1);
+        if (p == null) {//如果i值不合法
+            return false;
         }
         p.next = p.next.next;
         return true;
     }
 
-    //获取节点
-    private ListNode getListNode(int index) {
-        if (index < 0) {
+    //获取第i个节点
+    private ListNode getListNode(int i) {
+        if (i < 0) {//0为头结点
             return null;
         }
         ListNode p = headNode;//把p定义为头结点
         //判断index是否大于链表的长度，大于的话则获取失败
         //循环遍历到第index个节点
-        for (int i = 0; i < index; i++) {
+        int j = 0;//当前p指向第几个节点
+        while (p != null && j < i - 1) {
+            //找到第i-1个节点
             p = p.next;
+            j++;
         }
         return p;
     }
