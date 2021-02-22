@@ -37,13 +37,15 @@ public class SingleLinkedList {
     public static void main(String[] args) {
         SingleLinkedList singleLinkedList = new SingleLinkedList();//创建链表，为链表申请存储空间
         singleLinkedList.initList1();//初始化链表，带头结点
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 3; i++) {
             singleLinkedList.insert("第" + (i + 1) + "个节点", i + 1);
         }
-        singleLinkedList.insert2("第2个节点，不一样了哦", 2);//链表至少要有i-1个节点，否则插入失败
-        singleLinkedList.delete(3);
-        System.out.println(singleLinkedList.getListNode(1).data);
-        System.out.println(singleLinkedList.getListNode(1));
+        singleLinkedList.insert("第2个节点，不一样了哦", 2);//链表至少要有i-1个节点，否则插入失败
+        //singleLinkedList.delete(3);
+        ListNode a = singleLinkedList.getListNodeByIndex(1);
+        if(a!=null) System.out.println(singleLinkedList.getListNodeByIndex(1).data); else System.out.println("节点为null,无法获取data");
+        System.out.println(singleLinkedList.getListNodeByIndex(0));
+        System.out.println(singleLinkedList.getListNodeByValue("第3个节点"));
     }
 
     //初始化链表，带头结点
@@ -59,13 +61,13 @@ public class SingleLinkedList {
         head = null;
     }
 
-    //插入节点，后插法，需要找到前驱结点
+    //插入节点
     private boolean insert(Object value, int i) {
         if (i < 1) {
             return false;
         }
         //获取第i-1个节点，定义为p节点
-        ListNode p = this.getListNode(i - 1);
+        ListNode p = this.getListNodeByIndex(i-1);
         if (p == null) {//如果i值不合法
             return false;
         }
@@ -74,20 +76,6 @@ public class SingleLinkedList {
         return true;
     }
 
-    //插入节点，前插法，不需要前驱结点，偷天换日法
-    private boolean insert2(Object value, int i) {
-        if (i < 1) {
-            return false;
-        }
-        //获取第i个节点，命名为p节点
-        ListNode p = this.getListNode(i);
-        if (p == null) {//如果i值不合法
-            return false;
-        }
-        //在p节点前面插入节点
-        insertPreviousNode(p, value);
-        return true;
-    }
 
     //后插法，在节点p后面插入节点
     private boolean insertNextNode(ListNode p, Object value) {
@@ -130,7 +118,7 @@ public class SingleLinkedList {
             return false;
         }
         //获取第i-1个节点
-        ListNode p = this.getListNode(i - 1);
+        ListNode p = this.getListNodeByIndex(i - 1);
         if (p == null) {//如果i值不合法
             return false;
         }
@@ -138,8 +126,8 @@ public class SingleLinkedList {
         return true;
     }
 
-    //获取第i个节点
-    private ListNode getListNode(int i) {
+    //查找节点，按位查找
+    private ListNode getListNodeByIndex(int i) {
         if (i < 0) {//0为头结点
             return null;
         }
@@ -147,8 +135,29 @@ public class SingleLinkedList {
         //判断index是否大于链表的长度，大于的话则获取失败
         //循环遍历到第index个节点
         int j = 0;//当前p指向第几个节点
-        while (p != null && j < i - 1) {
-            //找到第i-1个节点
+        while (p != null && j < i) {
+            //找到第i个节点
+            p = p.next;
+            j++;
+        }
+        return p;
+    }
+
+    //查找节点，按值查找，找到第一个与传入值相等的节点
+    private ListNode getListNodeByValue(Object value) {
+
+        ListNode p = headNode;//把p定义为头结点
+        //判断index是否大于链表的长度，大于的话则获取失败
+        //循环遍历到第index个节点
+        int j = 0;//当前p指向第几个节点
+        if (value == null) {
+            while (p != null && value != p.data) {//若value是含有多个属性的对象，则需要分开比较
+                p = p.next;
+                j++;
+            }
+            return p;
+        }
+        while (p != null && !value.equals(p.data)) {//若value是含有多个属性的对象，则需要分开比较
             p = p.next;
             j++;
         }
