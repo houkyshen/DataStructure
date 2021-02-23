@@ -42,6 +42,8 @@ public class SingleLinkedList {
         }
         singleLinkedList.insert("第2个节点，不一样了哦", 2);//链表至少要有i-1个节点，否则插入失败
         //singleLinkedList.delete(3);
+        singleLinkedList.insertNextNode(singleLinkedList.headNode, "头插法1");
+        singleLinkedList.insertNextNode(singleLinkedList.headNode, "头插法2");
         ListNode a = singleLinkedList.getListNodeByIndex(1);
         if(a!=null) System.out.println(singleLinkedList.getListNodeByIndex(1).data); else System.out.println("节点为null,无法获取data");
         System.out.println(singleLinkedList.getListNodeByIndex(0));
