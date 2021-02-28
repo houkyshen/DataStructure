@@ -7,7 +7,7 @@ package com.houky.linearlist;
  */
 public class SingleLinkedList {
     //头指针，若有头结点则指向头结点，若没有头结点则指向第一个节点
-    Object head;
+    ListNode head;
     //头节点，数据域不存放数据
     ListNode headNode;
 
